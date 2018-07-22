@@ -20,34 +20,44 @@ function showPage(pageNumber, studentList) {
 }
 
 //Call the showPage function
-showPage(1); //Currently testing pageNumber to ensure program is working
+showPage(1); //Putting a 1 in the parentheses will show the first page
 
 // Create a function named 'appendPageLinks' that accepts a parameter for the studentList
 function appendPageLinks(studentList) {
   //Need to determine how many pages needed for the student list.  In this case,
   //there are 54 students on the list and there will need to be a total of 6
   //pages needed.
-  let $pages = $('.student-list').size / 10;
-  //Create a page link section
-  let $newDiv = document.createElement('div');
-  $($newDiv).addClass('pagination');
-  $('div').append($newDiv);
+  studentList = $('.student-list li').length;
+  $totalPages = studentList / 10; //10 is the amount of students that are to be on one page at a time.
 
-  let $newUL = document.createElement('ul');
-  $('.pagination').append($newUL);
+  //Dynamically create the pagination div with an unordered list and anchor tags
+  let $newDiv = document.createElement('div'); //Create a variable to hold the created element
+  $($newDiv).addClass('pagination'); //Use the created element to add a class called 'pagination'
+  $('.page').append($newDiv); //append the 'pagination' class to the bottom of the 'page' class
 
-  let $newLI = document.createElement('li');
-  $('ul').append($newLI);
+  let $newUL = document.createElement('ul'); //Create a variable to hold the created element of an unordered list
+  $('.pagination').append($newUL); //Append the unordered list to the 'pagination' class
+
   //Create a 'for' loop for every page
-    for(let i = 0; i < $pages.length; i++) {
+    for(let i = 0; i < $totalPages; i++) { //Use the '$totalPages' variable to loop through the total amount of pages from the student list.
     //add a page link to the page link section
-    $('.pagination li').append('<a href="#">+(i+1)+</a>');
+    $('.pagination ul').append('<li><a href="#">'+(i+1)+'</a></li>'); //Append a list and anchor with the 'href' and inrement the link by 1.
     }
-  //remove the old page link section from the site
-  //append the new page link section to the site
-  //define what happens when you click a link (action listener)
-    //use the 'showPage' function to display the page for the link clicked
-    //mark that link as "active"
+
+  //Create a function that listens for an event (for example: click event).
+  //The function will also remove and add a class named 'active' each time
+  //the a link is clicked.
+  $('.pagination li a').on('click', function() {
+    //remove the 'active' class when another link has been clicked.
+    $('.pagination li a').removeClass('active');
+    //add the 'active' class to the link that has been clicked.  Use the 'this'
+    //event to toggle the click to the link that was just clicked.
+    $(this).addClass('active');
+    //Use the 'showPage' function to display the page for the link that was clicked.
+    //Use the 'this' event and show the text on the screen.
+    showPage($(this).text());
+  });
 }
 
+//Call the 'appendPageLinks' function
 appendPageLinks();
