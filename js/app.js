@@ -10,9 +10,9 @@
 //and student list.
 function showPage(pageNumber, studentList) {
 //Hide all of the students from the page.
-  $('.student-list li').hide();
+  studentList = $('.student-list li').hide();
   //Loop through all of the students and show only 10 students on a page.
-  $('.student-list li').each(function(list){
+  $(studentList).each(function(list){
       if(list >= 10 * (pageNumber - 1) && list < 10 * pageNumber) {
           $(this).show();
       }
