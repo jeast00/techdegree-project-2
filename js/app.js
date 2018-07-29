@@ -20,7 +20,7 @@ $('.pagination').append($newUL);
 let $newSearchDiv = document.createElement('div');
 $($newSearchDiv).addClass('student-search');
 $('.page-header').append($newSearchDiv);
-let $newSearchInput = $('<input onkeyup="searchForStudent()" placeholder="Search for students..."></input>')
+let $newSearchInput = $('<input placeholder="Search for students...">')
 $('.student-search').append($newSearchInput);
 let $newSearchButton = $('<button>Search</button>');
 $('.student-search').append($newSearchButton);
@@ -71,10 +71,8 @@ function appendPageLinks(studentList) {
 appendPageLinks();
 
 
-//Create a function named 'searchForStudent' that accepts a parameter of the student list
-function searchForStudent(studentList) {
+$($newSearchButton).on('click', function() {
+  let $searchValue = $($newSearchInput).val();
+  
 
-}
-
-//Call the 'searchForStudent' function.
-searchForStudent();
+});
