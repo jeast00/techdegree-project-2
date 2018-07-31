@@ -69,3 +69,30 @@ function appendPageLinks(studentList)
 
 //Call the 'appendPageLinks' function
 appendPageLinks();
+
+
+/*
+Optional -- Create a search function to dynamically append a search class with
+input and a search button.  Search function will search for student names and
+emails.
+*/
+
+function appendStudentSearch()
+  {
+
+
+    //Create variables to hold the names and emails
+    let $studentNames = $('h3');
+    let $studentEmails = $('.email');
+
+    //loop through the names and emails
+    for(let i = 0; i < $studentNames.length; i++)
+      {
+        $studentNames[i];
+        console.log($studentNames[i]);
+      }
+
+  }
+
+  //Call the 'appendStudentSearch' Function
+  appendStudentSearch();
