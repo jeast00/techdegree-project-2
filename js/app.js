@@ -116,4 +116,4 @@ function appendStudentSearch(studentList)
   }
 
   //Call the 'appendStudentSearch' Function
-  appendStudentSearch(showPage());
+  appendStudentSearch();
