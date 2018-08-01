@@ -77,20 +77,35 @@ input and a search button.  Search function will search for student names and
 emails.
 */
 
-function appendStudentSearch()
+function appendStudentSearch(studentList)
   {
+    studentList = $('.student-list li');
+    //dynamically create the student search class and add it to the html file
+    let $newStudentSearchDiv = document.createElement('div');
+    $($newStudentSearchDiv).addClass('student-search');
+    $('.page-header').append($newStudentSearchDiv);
 
+    //dynamically create the search input field and add it to the 'student-search'
+    //class in the html file
+    let $newSearchInput = $('<input placeholder="Search for students...">');
+    $('.student-search').append($newSearchInput);
 
-    //Create variables to hold the names and emails
-    let $studentNames = $('h3');
-    let $studentEmails = $('.email');
+    //dynamically create the search button and add it to the 'student-search'
+    //class in the html file
+    let $newSearchButton = $('<button>Search</button>');
+    $('.student-search').append($newSearchButton);
 
-    //loop through the names and emails
-    for(let i = 0; i < $studentNames.length; i++)
+    //Create an event function for the button that searches for a student name
+    // and/or student email
+    $('button').on('click', function()
       {
-        $studentNames[i];
-        console.log($studentNames[i]);
-      }
+        //Create a variable that holds the input value entered
+        let $studentInput = $($newSearchInput).val().toLowerCase();
+
+
+
+      });
+
 
   }
 
