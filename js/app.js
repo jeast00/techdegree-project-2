@@ -37,7 +37,7 @@ function appendPageLinks(studentList)
     //Use the studentList parameter to determine the total amount of pages
     //needed for the total student list -- 10 students per page
     studentList = $('.student-list li').length;
-    $pagesPerStudentList = studentList / 10;
+    let $pagesPerStudentList = studentList / 10;
 
     //dynamically create the pagination class and add it to the html file
     let $newPaginationDiv = document.createElement('div');
@@ -101,13 +101,19 @@ function appendStudentSearch(studentList)
       {
         //Create a variable that holds the input value entered
         let $studentInput = $($newSearchInput).val().toLowerCase();
-
-
-
+        $(studentList).each(function()
+          {
+            if($(this).text().search(new RegExp($studentInput, "i")) > -1)
+              {
+                $(this).show();
+              } else
+                  {
+                    $(this).hide();
+                  }
+                  $($newSearchInput).val("");
+          });
       });
-
-
   }
 
   //Call the 'appendStudentSearch' Function
-  appendStudentSearch();
+  appendStudentSearch(showPage());
