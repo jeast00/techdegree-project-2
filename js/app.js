@@ -9,7 +9,22 @@
 const studentList = document.getElementsByClassName('student-item');
 //console.log(studentList); test variable to see all list items with console.log()
 const listStudentsPerPage = 10;
-const pagesPerStudentList = studentList / listStudentsPerPage;
+
+
+//Create variables to dynamically add the pagination class to the html file
+const pageClass = document.getElementsByClassName('page')[0];
+const newPaginationDiv = document.createElement('div');
+newPaginationDiv.className = "pagination";
+pageClass.appendChild(newPaginationDiv);
+
+//Create a variable to dynamically add the unordered list element to the
+//pagination class in the html file
+const newPaginationUnorderedList = document.createElement('ul');
+newPaginationDiv.appendChild(newPaginationUnorderedList);
+
+const newPaginationList = document.createElement('li');
+newPaginationUnorderedList.appendChild(newPaginationList);
+
 
 //Create a function to hide the students from the page
 function hideStudents() {
@@ -48,3 +63,27 @@ function showPage(pageNumber, studentList) {
 
 //call the 'showPage' fucntion
 showPage(1, studentList);
+
+
+//Second function 'appendPageLinks'
+//The function should hold one parameter in parenthesis
+//For example 'function appendPageLinks(studentList)'
+//When the function is created, the first thing to do is determine the amount
+//of pages needed - i.e. (if there are 54 students and 10 students are on one
+//page at a time, there should be 6 pages)
+//Then create a page link section
+//Use a 'for' loop to loop through the pages and add the page links to the site
+//Use an 'event listener' each time the links are 'clicked' - ensure that the
+//'clicked' link is 'active'
+
+function appendPageLinks(studentList) {
+    const pagesPerStudentList = studentList.length / listStudentsPerPage; //equals to 5.4
+    console.log(pagesPerStudentList);
+
+    for(let i = 0; i < pagesPerStudentList; i++) {
+      newPaginationList[i].appendChild("<a href></a>");
+    }
+}
+
+//call the appendPageLinks function
+appendPageLinks(studentList);
