@@ -5,115 +5,46 @@
   there should be 4 pagination links created and so on.
 */
 
+//Construct global variables at the top of the javascript program
+const studentList = document.getElementsByClassName('student-item');
+//console.log(studentList); test variable to see all list items with console.log()
+const listStudentsPerPage = 10;
+const pagesPerStudentList = studentList / listStudentsPerPage;
 
-//Create two functions - showPage and appendPageLinks
-
-//First function 'showPage' holds two parameters - pageNumber and studentList
-
-function showPage(pageNumber, studentList)
-  {
-    //Create a variable to hold all of the students from the list and
-    //Hide all of the students from the page
-    studentList = $('.student-list li');
-    $(studentList).hide();
-    //loop through the students and 'show' 10 students on the page at a time
-    $(studentList).each(function(list)
-      {
-        if(list >= 10 * (pageNumber - 1) && list < pageNumber * 10)
-          {
-            $(this).show();
-          }
-      });
+//Create a function to hide the students from the page
+function hideStudents() {
+  for(let i = 0; i < studentList.length; i++) {
+    studentList[i].style.display = "none";
   }
+  //return studentList;
+}
 
-//call the 'showPage' function
-showPage(1);
+//Call the hideStudents function to ensure the function is working properly
+//hideStudents();
 
+//Add two functions named 'showPage' and 'appendPageLinks'
 
-//Second function 'appendPageLinks' holds one parameter - studentList
+//First function 'showPage'
+//This function should hold two parameters in parenthesis
+//For example 'function showPage(pageNumber, studentList)'
+//When the function is created, the first thing to do is to hide all of the students
+//This is where the 'hideStudents' function will be called
+//Then use a 'for' loop to loop through the studentList variable
+//Inside the 'for' loop, use an 'if' statement to show students 1-10
 
-function appendPageLinks(studentList)
-  {
-    //Use the studentList parameter to determine the total amount of pages
-    //needed for the total student list -- 10 students per page
-    studentList = $('.student-list li').length;
-    let $pagesPerStudentList = studentList / 10;
-
-    //dynamically create the pagination class and add it to the html file
-    let $newPaginationDiv = document.createElement('div');
-    $($newPaginationDiv).addClass('pagination');
-    $('.page').append($newPaginationDiv);
-
-    //dynamically create an unordered list element and add it to the html file
-    let $newPaginationUL = document.createElement('ul');
-    $('.pagination').append($newPaginationUL);
-
-
-
-    //Use a 'for' loop to dynamically create the list and anchor elements
-    for (let i = 0; i < $pagesPerStudentList; i++)
-      {
-        $('.pagination ul').append('<li><a href="#">'+(i+1)+'</a></li>');
-      }
-
-    //Function to add and remove links as active when 'clicked'
-    $('.pagination li a').on('click', function()
-      {
-        $('.pagination li a').removeClass('active');
-        $(this).addClass('active');
-        showPage($(this).text());
-      });
-
+function showPage(pageNumber, studentList) {
+  //Hide the students first
+  hideStudents();
+  //loop through the students
+  for(let i = 0; i < studentList.length; i++) {
+    //Use an 'if' statement to find the index of each student from 1-10 and add
+    //the 10 students to the first page
+    if(i >= (pageNumber * listStudentsPerPage) - 10 && i < (pageNumber * listStudentsPerPage)) {
+        studentList[i].style.display = 'block';
+    }
   }
+  //return studentList;
+}
 
-
-//Call the 'appendPageLinks' function
-appendPageLinks();
-
-
-/*
-Optional -- Create a search function to dynamically append a search class with
-input and a search button.  Search function will search for student names and
-emails.
-*/
-
-function appendStudentSearch(studentList)
-  {
-    studentList = $('.student-list li');
-    //dynamically create the student search class and add it to the html file
-    let $newStudentSearchDiv = document.createElement('div');
-    $($newStudentSearchDiv).addClass('student-search');
-    $('.page-header').append($newStudentSearchDiv);
-
-    //dynamically create the search input field and add it to the 'student-search'
-    //class in the html file
-    let $newSearchInput = $('<input placeholder="Search for students...">');
-    $('.student-search').append($newSearchInput);
-
-    //dynamically create the search button and add it to the 'student-search'
-    //class in the html file
-    let $newSearchButton = $('<button>Search</button>');
-    $('.student-search').append($newSearchButton);
-
-    //Create an event function for the button that searches for a student name
-    // and/or student email
-    $('button').on('click', function()
-      {
-        //Create a variable that holds the input value entered
-        let $studentInput = $($newSearchInput).val().toLowerCase();
-        $(studentList).each(function()
-          {
-            if($(this).text().search(new RegExp($studentInput, "i")) > -1)
-              {
-                $(this).show();
-              } else
-                  {
-                    $(this).hide();
-                  }
-                  $($newSearchInput).val("");
-          });
-      });
-  }
-
-  //Call the 'appendStudentSearch' Function
-  appendStudentSearch();
+//call the 'showPage' fucntion
+showPage(1, studentList);
