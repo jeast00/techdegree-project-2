@@ -22,8 +22,8 @@ pageClass.appendChild(newPaginationDiv);
 const newPaginationUnorderedList = document.createElement('ul');
 newPaginationDiv.appendChild(newPaginationUnorderedList);
 
-const newPaginationList = document.createElement('li');
-newPaginationUnorderedList.appendChild(newPaginationList);
+let newPaginationList;
+let newPaginationAnchor;
 
 
 //Create a function to hide the students from the page
@@ -77,13 +77,22 @@ showPage(1, studentList);
 //'clicked' link is 'active'
 
 function appendPageLinks(studentList) {
-    const pagesPerStudentList = studentList.length / listStudentsPerPage; //equals to 5.4
-    console.log(pagesPerStudentList);
+    const pagesPerStudentList = Math.ceil(studentList.length / listStudentsPerPage); //equals to 6
+    //console.log(pagesPerStudentList);
 
-    for(let i = 0; i < pagesPerStudentList; i++) {
-      newPaginationList[i].appendChild("<a href></a>");
+    for (var i = 0; i < pagesPerStudentList; i++) {
+      newPaginationList = document.createElement('li');
+      newPaginationUnorderedList.appendChild(newPaginationList);
+      //console.log(newPaginationList);
+      newPaginationAnchor = document.createElement('a');
+      newPaginationAnchor.href = "#";
+      newPaginationAnchor.textContent = i+1;
+      newPaginationList.appendChild(newPaginationAnchor);
+      //console.log(newPaginationAnchor);
+
     }
-}
+    console.log(newPaginationAnchor);
+  }
 
 //call the appendPageLinks function
 appendPageLinks(studentList);
