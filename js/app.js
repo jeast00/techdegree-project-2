@@ -5,94 +5,107 @@
   there should be 4 pagination links created and so on.
 */
 
-//Construct global variables at the top of the javascript program
-const studentList = document.getElementsByClassName('student-item');
-//console.log(studentList); test variable to see all list items with console.log()
-const listStudentsPerPage = 10;
 
+//Create a function to hide the list of students from the website
+//Use a studentList parameter to get the student list
+function hideStudentList(studentList)
+{
+  //Use the parameter variable to hold the student list
+  studentList = document.getElementsByClassName('student-item');
 
-//Create variables to dynamically add the pagination class to the html file
-const pageClass = document.getElementsByClassName('page')[0];
-const newPaginationDiv = document.createElement('div');
-newPaginationDiv.className = "pagination";
-pageClass.appendChild(newPaginationDiv);
-
-//Create a variable to dynamically add the unordered list element to the
-//pagination class in the html file
-const newPaginationUnorderedList = document.createElement('ul');
-newPaginationDiv.appendChild(newPaginationUnorderedList);
-
-let newPaginationList;
-let newPaginationAnchor;
-
-
-//Create a function to hide the students from the page
-function hideStudents() {
-  for(let i = 0; i < studentList.length; i++) {
-    studentList[i].style.display = "none";
+  //Use a 'for' loop to loop through the students, and hide the students from
+  //the site
+  for (var i = 0; i < studentList.length; i++)
+  {
+    studentList[i].style.display = "none"; //Hide each student
   }
-  //return studentList;
 }
 
-//Call the hideStudents function to ensure the function is working properly
-//hideStudents();
+/*
+Create a function to show 10 students on a page at a time.  The function
+will pass two parameters - pageNumber and StudentList.  The function will
+need to pass the pageNumber when a page link is clicked showing the correct
+students on the page.  I.E.(if page link 2 is clicked, students 11-20 will
+be shown on the page.)
+*/
+function showPage(pageNumber, studentList)
+{
+  //Call the 'hideStudentList' function to first hide the students from the page
+  hideStudentList();
 
-//Add two functions named 'showPage' and 'appendPageLinks'
+  //Use the parameter variable to hold the student list
+  studentList = document.getElementsByClassName('student-item');
 
-//First function 'showPage'
-//This function should hold two parameters in parenthesis
-//For example 'function showPage(pageNumber, studentList)'
-//When the function is created, the first thing to do is to hide all of the students
-//This is where the 'hideStudents' function will be called
-//Then use a 'for' loop to loop through the studentList variable
-//Inside the 'for' loop, use an 'if' statement to show students 1-10
-
-function showPage(pageNumber, studentList) {
-  //Hide the students first
-  hideStudents();
-  //loop through the students
-  for(let i = 0; i < studentList.length; i++) {
-    //Use an 'if' statement to find the index of each student from 1-10 and add
-    //the 10 students to the first page
-    if(i >= (pageNumber * listStudentsPerPage) - 10 && i < (pageNumber * listStudentsPerPage)) {
-        studentList[i].style.display = 'block';
+  //Use a 'for' loop to loop through the students
+  for (var i = 0; i < studentList.length; i++)
+  {
+    //Use an 'if' statement if the student should be on 'pageNumber'
+    if(i >= (pageNumber * 10) - 10 && i < (pageNumber * 10))
+    {
+      studentList[i].style.display = "block"; //display the student(s)
     }
   }
-  //return studentList;
 }
 
-//call the 'showPage' fucntion
-showPage(1, studentList);
+//Call the 'showPage' function and show the first page of students
+showPage(1);
 
 
-//Second function 'appendPageLinks'
-//The function should hold one parameter in parenthesis
-//For example 'function appendPageLinks(studentList)'
-//When the function is created, the first thing to do is determine the amount
-//of pages needed - i.e. (if there are 54 students and 10 students are on one
-//page at a time, there should be 6 pages)
-//Then create a page link section
-//Use a 'for' loop to loop through the pages and add the page links to the site
-//Use an 'event listener' each time the links are 'clicked' - ensure that the
-//'clicked' link is 'active'
+/*
+  Create a function that dynamically appends the page links to the site.
+  When the page links have been appended to the site, create an event handler
+  when a link has been clicked (according to the page link number), the students
+  will show on the page.  I.E.(if page link 3 is clicked, students 21-30 should
+  show on the page). The fucntion will pass one parameter - studentList
+*/
+function appendPageLinks(StudentList)
+{
+  //Use the parameter variable to hold the student list
+  studentList = document.getElementsByClassName('student-item');
 
-function appendPageLinks(studentList) {
-    const pagesPerStudentList = Math.ceil(studentList.length / listStudentsPerPage); //equals to 6
-    //console.log(pagesPerStudentList);
+  //Create a variable to hold the number of pages for the site
+  //Round up the variable to the top number, i.e.(if number is 4.4, round up to 5).
+  let totalPages = Math.ceil(studentList.length / 10);
+  //console.log(totalPages); Shows 6
 
-    for (var i = 0; i < pagesPerStudentList; i++) {
-      newPaginationList = document.createElement('li');
-      newPaginationUnorderedList.appendChild(newPaginationList);
-      //console.log(newPaginationList);
-      newPaginationAnchor = document.createElement('a');
-      newPaginationAnchor.href = "#";
-      newPaginationAnchor.textContent = i+1;
-      newPaginationList.appendChild(newPaginationAnchor);
-      //console.log(newPaginationAnchor);
+  //Create and append the pagination class to the html file
+  const newPaginationDiv = document.createElement('div');
+  newPaginationDiv.className = "pagination";
+  const pageClass = document.getElementsByClassName('page')[0];
+  pageClass.appendChild(newPaginationDiv);
 
-    }
-    console.log(newPaginationAnchor);
+  //Create and append an unordered list to the pagination class in the html file
+  const newPaginationUnorderedList = document.createElement('ul');
+  newPaginationDiv.appendChild(newPaginationUnorderedList);
+
+  //Use a 'for' loop to create and append list and anchor elements to the
+  //unordered list element in the html file
+  for(let i = 0; i < totalPages; i ++)
+  {
+    let newPaginationList = document.createElement('li');
+    newPaginationUnorderedList.appendChild(newPaginationList);
+    let newPaginationAnchor = document.createElement('a');
+    newPaginationAnchor.href = "#";
+    newPaginationAnchor.textContent = i+1;
+    newPaginationList.appendChild(newPaginationAnchor);
   }
 
-//call the appendPageLinks function
-appendPageLinks(studentList);
+  //Set the first page link as 'active'
+  let firstPaginationAnchor = document.getElementsByTagName('a')[0];
+  firstPaginationAnchor.className = "active";
+
+  //Create a variable to hold the anchor list
+  let pageLinks = document.getElementsByTagName('ul')[1];
+  console.log(pageLinks);
+
+  //Create an event handler for the links when 'clicked'
+  pageLinks.addEventListener('click', (event) =>
+  {
+    
+  });
+
+
+}
+
+//Call the 'appendPageLinks' function
+appendPageLinks();
