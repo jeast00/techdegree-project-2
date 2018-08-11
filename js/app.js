@@ -95,15 +95,28 @@ function appendPageLinks(StudentList)
   firstPaginationAnchor.className = "active";
 
   //Create a variable to hold the anchor list
-  let pageLinks = document.getElementsByTagName('ul')[1];
-  console.log(pageLinks);
+  let pageActive = document.getElementsByTagName('a');
+  //console.log(pageLinkList);
 
   //Create an event handler for the links when 'clicked'
-  pageLinks.addEventListener('click', (event) =>
+  newPaginationDiv.addEventListener('click', (event) =>
   {
-    
-  });
+    event.preventDefault(); //Prevent the screen jumping back to the top after a link has been clicked.
+    event.target.tagName = "A"; //Initiate the event.target
+    let linkButton = event.target.textContent;//Hold the text content of the clicked link in a variable
+    console.log(linkButton); //Ensure when link is clicked that number shows in console.log
+    showPage(linkButton); //Call the 'showPage' function
 
+    //Use a 'for' loop to loop through the anchor elements
+    for(let i = 0; i < pageActive.length; i++)
+    {
+      //Remove the 'active' class from the anchor element
+      pageActive[i].classList.remove('active');
+
+      //Add the 'active' class to the link that is clicked
+      event.target.classList.add('active');
+    }
+  });
 
 }
 
