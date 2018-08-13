@@ -5,6 +5,9 @@
   there should be 4 pagination links created and so on.
 */
 
+//---------------------------------------------------------------------------//
+
+
 
 //Create a function to hide the list of students from the website
 //Use a studentList parameter to get the student list
@@ -46,9 +49,6 @@ function showPage(pageNumber, studentList)
     }
   }
 }
-
-//Call the 'showPage' function and show the first page of students
-showPage(1);
 
 
 /*
@@ -104,7 +104,7 @@ function appendPageLinks(StudentList)
     event.preventDefault(); //Prevent the screen jumping back to the top after a link has been clicked.
     event.target.tagName = "A"; //Initiate the event.target
     let linkButton = event.target.textContent;//Hold the text content of the clicked link in a variable
-    console.log(linkButton); //Ensure when link is clicked that number shows in console.log
+    //console.log(linkButton); //Ensure when link is clicked that number shows in console.log
     showPage(linkButton); //Call the 'showPage' function
 
     //Use a 'for' loop to loop through the anchor elements
@@ -120,5 +120,74 @@ function appendPageLinks(StudentList)
 
 }
 
+//---------------------------------------------------------------------------//
+//--Exceeds Expectations--//
+/*
+- Optional -
+Create a function that dynamically appends the search input and search button
+to the site.  When the user types in a name(or portion of a name), show the
+student name or students.  When the student(s) are on the page, append the page
+links based on search.  This function will pass one parameter - studentList
+*/
+
+function appendSearch(studentList)
+{
+  //Use the parameter variable to hold the student list
+  studentList = document.getElementsByClassName('student-item');
+
+  //Create and append the student search class to the html file
+  const newStudentSearchDiv = document.createElement('div');
+  newStudentSearchDiv.className = "student-search";
+  const pageHeaderClass = document.getElementsByClassName('page-header')[0];
+  pageHeaderClass.appendChild(newStudentSearchDiv);
+
+  //Create and append the search bar to the student-search class in the html file
+  //Enter a place holder for the search bar
+  const newStudentSearchBar = document.createElement('input');
+  newStudentSearchBar.placeholder += "Search for students...";
+  newStudentSearchDiv.appendChild(newStudentSearchBar);
+
+  //Createt and append the search button to the student-search class in the html file
+  //Enter text content as 'Search'
+  const newStudentSearchButton = document.createElement('button');
+  newStudentSearchButton.textContent = "Search";
+  newStudentSearchDiv.appendChild(newStudentSearchButton);
+
+  const paginationDiv = document.getElementsByClassName('pagination')[0];
+
+
+
+
+  //Create an event handler when the 'search' button is clicked
+  newStudentSearchButton.addEventListener('click', (event) =>
+  {
+    event.preventDefault();
+    paginationDiv.remove();
+    let studentInputValue = newStudentSearchBar.value.toLowerCase();
+    newStudentSearchBar.value = '';
+    console.log(studentInputValue); //Test the input to the console
+
+    //let studentTextContent = studentList.textContent;
+    //console.log(studentTextContent);
+    for(let i = 0; i <studentList.length; i++)
+    {
+      let studentNames = document.getElementsByTagName('h3')[i].textContent;
+      if(studentNames.indexOf(studentInputValue) > -1)
+      {
+        studentList[i].style.display = "";
+      }else
+      {
+        studentList[i].style.display = "none";
+      }
+    }
+  });
+}
+
+//Call the 'showPage' function and show the first page of students
+showPage(1);
+
 //Call the 'appendPageLinks' function
 appendPageLinks();
+
+//Call the 'appendSearch' function
+appendSearch();
