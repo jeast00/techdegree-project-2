@@ -181,6 +181,7 @@ function appendSearch(studentList)
 
     //console.log(newStudentSearchArray);
     removeLinks();
+    showPage(newStudentSearchArray)
     appendPageLinks(newStudentSearchArray);
     //console.log(studentInputValue);
     newStudentSearchArray = [];
