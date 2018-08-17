@@ -8,7 +8,6 @@
 //---------------------------------------------------------------------------//
 
 let studentListArray = document.getElementsByClassName('student-item');
-let currentStudentList = studentListArray;
 
 
 //Create a function to hide the list of students from the website
@@ -40,9 +39,6 @@ function showPage(pageNumber, studentList)
   //Call the 'hideStudentList' function to first hide the students from the page
   hideStudentList(studentList);
 
-  //Use the parameter variable to hold the student list
-  //studentList = document.getElementsByClassName('student-item');
-
   //Use a 'for' loop to loop through the students
   for (var i = 0; i < studentList.length; i++)
   {
@@ -64,8 +60,6 @@ function showPage(pageNumber, studentList)
 */
 function appendPageLinks(studentList)
 {
-  //Use the parameter variable to hold the student list
-  //studentList = document.getElementsByClassName('student-item');
 
   //Create a variable to hold the number of pages for the site
   //Round up the variable to the top number, i.e.(if number is 4.4, round up to 5).
@@ -140,10 +134,9 @@ student name or students.  When the student(s) are on the page, append the page
 links based on search.  This function will pass one parameter - studentList
 */
 
-function appendSearch()
+function appendSearch(studentList)
 {
 
-  let studentList = document.getElementsByClassName('student-item');
 
   //Create and append the student search class to the html file
   const newStudentSearchDiv = document.createElement('div');
@@ -187,7 +180,6 @@ function appendSearch()
     }
 
     //console.log(newStudentSearchArray);
-    // studentListArray = newStudentSearchArray;
     removeLinks();
     appendPageLinks(newStudentSearchArray);
     //console.log(studentInputValue);
@@ -202,4 +194,4 @@ showPage(1, studentListArray);
 appendPageLinks(studentListArray);
 
 //Call the 'appendSearch' function
-appendSearch();
+appendSearch(studentListArray);
