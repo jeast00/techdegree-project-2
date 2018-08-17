@@ -7,6 +7,8 @@
 
 //---------------------------------------------------------------------------//
 
+let studentListArray = document.getElementsByClassName('student-item');
+let currentStudentList = studentListArray;
 
 
 //Create a function to hide the list of students from the website
@@ -14,7 +16,7 @@
 function hideStudentList(studentList)
 {
   //Use the parameter variable to hold the student list
-  studentList = document.getElementsByClassName('student-item');
+  //studentList = document.getElementsByClassName('student-item');
 
   //Use a 'for' loop to loop through the students, and hide the students from
   //the site
@@ -23,6 +25,8 @@ function hideStudentList(studentList)
     studentList[i].style.display = "none"; //Hide each student
   }
 }
+
+
 
 /*
 Create a function to show 10 students on a page at a time.  The function
@@ -34,10 +38,10 @@ be shown on the page.)
 function showPage(pageNumber, studentList)
 {
   //Call the 'hideStudentList' function to first hide the students from the page
-  hideStudentList();
+  hideStudentList(studentList);
 
   //Use the parameter variable to hold the student list
-  studentList = document.getElementsByClassName('student-item');
+  //studentList = document.getElementsByClassName('student-item');
 
   //Use a 'for' loop to loop through the students
   for (var i = 0; i < studentList.length; i++)
@@ -58,10 +62,10 @@ function showPage(pageNumber, studentList)
   will show on the page.  I.E.(if page link 3 is clicked, students 21-30 should
   show on the page). The fucntion will pass one parameter - studentList
 */
-function appendPageLinks(StudentList)
+function appendPageLinks(studentList)
 {
   //Use the parameter variable to hold the student list
-  studentList = document.getElementsByClassName('student-item');
+  //studentList = document.getElementsByClassName('student-item');
 
   //Create a variable to hold the number of pages for the site
   //Round up the variable to the top number, i.e.(if number is 4.4, round up to 5).
@@ -91,8 +95,8 @@ function appendPageLinks(StudentList)
   }
 
   //Set the first page link as 'active'
-  let firstPaginationAnchor = document.getElementsByTagName('a')[0];
-  firstPaginationAnchor.className = "active";
+  // let firstPaginationAnchor = document.getElementsByTagName('a')[0];
+  // firstPaginationAnchor.className = "active";
 
   //Create a variable to hold the anchor list
   let pageActive = document.getElementsByTagName('a');
@@ -104,8 +108,8 @@ function appendPageLinks(StudentList)
     event.preventDefault(); //Prevent the screen jumping back to the top after a link has been clicked.
     event.target.tagName = "A"; //Initiate the event.target
     let linkButton = event.target.textContent;//Hold the text content of the clicked link in a variable
-    //console.log(linkButton); //Ensure when link is clicked that number shows in console.log
-    showPage(linkButton); //Call the 'showPage' function
+    console.log(linkButton); //Ensure when link is clicked that number shows in console.log
+    showPage(linkButton, studentList); //Call the 'showPage' function
 
     //Use a 'for' loop to loop through the anchor elements
     for(let i = 0; i < pageActive.length; i++)
@@ -120,6 +124,12 @@ function appendPageLinks(StudentList)
 
 }
 
+function removeLinks()
+{
+  let paginationDiv = document.getElementsByClassName('pagination')[0];
+  paginationDiv.remove();
+}
+
 //---------------------------------------------------------------------------//
 //--Exceeds Expectations--//
 /*
@@ -130,10 +140,10 @@ student name or students.  When the student(s) are on the page, append the page
 links based on search.  This function will pass one parameter - studentList
 */
 
-function appendSearch(studentList)
+function appendSearch()
 {
-  //Use the parameter variable to hold the student list
-  studentList = document.getElementsByClassName('student-item');
+
+  let studentList = document.getElementsByClassName('student-item');
 
   //Create and append the student search class to the html file
   const newStudentSearchDiv = document.createElement('div');
@@ -153,41 +163,43 @@ function appendSearch(studentList)
   newStudentSearchButton.textContent = "Search";
   newStudentSearchDiv.appendChild(newStudentSearchButton);
 
-  const paginationDiv = document.getElementsByClassName('pagination')[0];
-
-
-
+  //const paginationDiv = document.getElementsByClassName('pagination')[0];
 
   //Create an event handler when the 'search' button is clicked
   newStudentSearchButton.addEventListener('click', (event) =>
   {
     event.preventDefault();
-    paginationDiv.remove();
+    let newStudentSearchArray = [];
     let studentInputValue = newStudentSearchBar.value.toLowerCase();
     newStudentSearchBar.value = '';
-    console.log(studentInputValue); //Test the input to the console
-
-    //let studentTextContent = studentList.textContent;
-    //console.log(studentTextContent);
-    for(let i = 0; i <studentList.length; i++)
+    for(let i = 0; i < studentList.length; i++)
     {
       let studentNames = document.getElementsByTagName('h3')[i].textContent;
       if(studentNames.indexOf(studentInputValue) > -1)
       {
-        studentList[i].style.display = "";
+        newStudentSearchArray.push(studentNames);
+        //console.log(newStudentSearchArray);
+        studentList[i].style.display = "block";
       }else
       {
         studentList[i].style.display = "none";
       }
     }
+
+    //console.log(newStudentSearchArray);
+    // studentListArray = newStudentSearchArray;
+    removeLinks();
+    appendPageLinks(newStudentSearchArray);
+    //console.log(studentInputValue);
+    newStudentSearchArray = [];
   });
 }
 
 //Call the 'showPage' function and show the first page of students
-showPage(1);
+showPage(1, studentListArray);
 
 //Call the 'appendPageLinks' function
-appendPageLinks();
+appendPageLinks(studentListArray);
 
 //Call the 'appendSearch' function
 appendSearch();
