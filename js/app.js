@@ -124,6 +124,7 @@ function removeLinks()
   paginationDiv.remove();
 }
 
+
 //---------------------------------------------------------------------------//
 //--Exceeds Expectations--//
 /*
@@ -131,13 +132,13 @@ function removeLinks()
 Create a function that dynamically appends the search input and search button
 to the site.  When the user types in a name(or portion of a name), show the
 student name or students.  When the student(s) are on the page, append the page
-links based on search.  This function will pass one parameter - studentList
+links based on search.  When the search has no results, show a message on the
+screen stating that there were no students found.  This function will pass one
+parameter - studentList
 */
 
 function appendSearch(studentList)
 {
-
-
   //Create and append the student search class to the html file
   const newStudentSearchDiv = document.createElement('div');
   newStudentSearchDiv.className = "student-search";
@@ -162,31 +163,69 @@ function appendSearch(studentList)
   newStudentSearchButton.addEventListener('click', (event) =>
   {
     event.preventDefault();
+    hideMessage();
     let newStudentSearchArray = [];
     let studentInputValue = newStudentSearchBar.value.toLowerCase();
     newStudentSearchBar.value = '';
     for(let i = 0; i < studentList.length; i++)
     {
-      let studentNames = document.getElementsByTagName('h3')[i].textContent;
-      if(studentNames.indexOf(studentInputValue) > -1)
+      let studentItems = document.getElementsByTagName('h3')[i].parentNode.parentNode;
+      if(studentItems.textContent.indexOf(studentInputValue) > -1)
       {
-        newStudentSearchArray.push(studentNames);
-        //console.log(newStudentSearchArray);
+        newStudentSearchArray.push(studentItems);
+        console.log(newStudentSearchArray);
         studentList[i].style.display = "block";
       }else
       {
         studentList[i].style.display = "none";
       }
     }
-
-    //console.log(newStudentSearchArray);
-    removeLinks();
-    showPage(newStudentSearchArray)
-    appendPageLinks(newStudentSearchArray);
-    //console.log(studentInputValue);
-    newStudentSearchArray = [];
+        //console.log(newStudentSearchArray);
+      removeLinks();
+      hideStudentList(newStudentSearchArray);
+      if(newStudentSearchArray.length > 0)
+      {
+        showPage(1, newStudentSearchArray)
+        appendPageLinks(newStudentSearchArray);
+      } else
+      {
+        showMessage();
+        appendPageLinks(newStudentSearchArray);
+      }
+      newStudentSearchArray = [];
   });
 }
+
+
+//Create a function that creates and appends the no students found message in the
+//html file.
+function noStudentsFoundMessage()
+{
+  const messageDiv = document.createElement('div');
+  messageDiv.className = "no-students-found";
+  const pageClass = document.getElementsByClassName('page')[0];
+  messageDiv.innerHTML = "<h2>No students found</h2>";
+  messageDiv.style.display = "none";
+  pageClass.appendChild(messageDiv);
+}
+
+//Call the 'noStudentsFoundMessage' function
+noStudentsFoundMessage();
+
+//Create a function that shows the no students found message on the screen
+function showMessage()
+{
+  const showStudentMessage = document.getElementsByClassName('no-students-found')[0];
+  showStudentMessage.style.display = "block";
+}
+
+//Create a function that hides the no students found message on the screen
+function hideMessage()
+{
+  const hideStudentMessage = document.getElementsByClassName('no-students-found')[0];
+  hideStudentMessage.style.display = "none";
+}
+
 
 //Call the 'showPage' function and show the first page of students
 showPage(1, studentListArray);
