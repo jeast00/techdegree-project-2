@@ -7,6 +7,7 @@
 
 //---------------------------------------------------------------------------//
 
+//Create a variable that will pass the student list through the functions
 let studentListArray = document.getElementsByClassName('student-item');
 
 
@@ -64,7 +65,6 @@ function appendPageLinks(studentList)
   //Create a variable to hold the number of pages for the site
   //Round up the variable to the top number, i.e.(if number is 4.4, round up to 5).
   let totalPages = Math.ceil(studentList.length / 10);
-  //console.log(totalPages); Shows 6
 
   //Create and append the pagination class to the html file
   const newPaginationDiv = document.createElement('div');
@@ -88,21 +88,15 @@ function appendPageLinks(studentList)
     newPaginationList.appendChild(newPaginationAnchor);
   }
 
-  //Set the first page link as 'active'
-  // let firstPaginationAnchor = document.getElementsByTagName('a')[0];
-  // firstPaginationAnchor.className = "active";
-
   //Create a variable to hold the anchor list
   let pageActive = document.getElementsByTagName('a');
-  //console.log(pageLinkList);
 
   //Create an event handler for the links when 'clicked'
   newPaginationDiv.addEventListener('click', (event) =>
   {
     event.preventDefault(); //Prevent the screen jumping back to the top after a link has been clicked.
     event.target.tagName = "A"; //Initiate the event.target
-    let linkButton = event.target.textContent;//Hold the text content of the clicked link in a variable
-    console.log(linkButton); //Ensure when link is clicked that number shows in console.log
+    let linkButton = event.target.textContent; //Hold the text content of the clicked link in a variable
     showPage(linkButton, studentList); //Call the 'showPage' function
 
     //Use a 'for' loop to loop through the anchor elements
@@ -118,6 +112,7 @@ function appendPageLinks(studentList)
 
 }
 
+//Create a function that removes the pagination links for the html file
 function removeLinks()
 {
   let paginationDiv = document.getElementsByClassName('pagination')[0];
@@ -131,12 +126,13 @@ function removeLinks()
 - Optional -
 Create a function that dynamically appends the search input and search button
 to the site.  When the user types in a name(or portion of a name), show the
-student name or students.  When the student(s) are on the page, append the page
+student or students.  When the student(s) are on the page, append the page
 links based on search.  When the search has no results, show a message on the
 screen stating that there were no students found.  This function will pass one
 parameter - studentList
 */
 
+//Create a function that creates and appends the search bar and search button
 function appendSearch(studentList)
 {
   //Create and append the student search class to the html file
@@ -157,42 +153,59 @@ function appendSearch(studentList)
   newStudentSearchButton.textContent = "Search";
   newStudentSearchDiv.appendChild(newStudentSearchButton);
 
-  //const paginationDiv = document.getElementsByClassName('pagination')[0];
-
   //Create an event handler when the 'search' button is clicked
   newStudentSearchButton.addEventListener('click', (event) =>
   {
-    event.preventDefault();
-    hideMessage();
-    let newStudentSearchArray = [];
-    let studentInputValue = newStudentSearchBar.value.toLowerCase();
-    newStudentSearchBar.value = '';
+    event.preventDefault();  //Prevent the screen from jumping to the top when the button is clicked.
+    hideNoStudentsFoundMessage(); //Call the 'hideNoStudentsFoundMessage' function to hide the 'No students found' Message when the button is clicked.
+    let newStudentSearchArray = [];  //Create an empty array variable.
+    let studentInputValue = newStudentSearchBar.value.toLowerCase(); //Create a variable to hold the value of the search input.
+    newStudentSearchBar.value = ''; //Each time an input is entered, the input disappears from the search bar.
+
+    //Use a 'for' loop to loop through the studentList parameter.
     for(let i = 0; i < studentList.length; i++)
     {
+      //Create a variable to pull the element of the student name.
       let studentItems = document.getElementsByTagName('h3')[i].parentNode.parentNode;
+
+      //Use an 'if' statement to find the index of the student items and pass them into the emppty array.
       if(studentItems.textContent.indexOf(studentInputValue) > -1)
       {
-        newStudentSearchArray.push(studentItems);
-        console.log(newStudentSearchArray);
-        studentList[i].style.display = "block";
+        newStudentSearchArray.push(studentItems); //Use the .push method to add the searched items into the empty array.
+        studentList[i].style.display = "block"; //Show the searched student(s).
       }else
       {
-        studentList[i].style.display = "none";
+        studentList[i].style.display = "none"; //Hide the remaining students.
       }
     }
-        //console.log(newStudentSearchArray);
+      //Call the 'removeLinks' function to remove the links from the page.
       removeLinks();
+
+      //Call the 'hideStudentList' function and pass the searched students array into the function.
       hideStudentList(newStudentSearchArray);
+
+      //Use an 'if' statement to see if the searched students array is greater
+      //and call the 'showPage' and 'appendPageLinks' functions if true.  If
+      //false, call the 'showNoStudentsFoundMessage' function.
       if(newStudentSearchArray.length > 0)
       {
-        showPage(1, newStudentSearchArray)
+        //Call the 'showPage' function and pass the searched students array into the function.
+        showPage(1, newStudentSearchArray);
+
+        //Call the 'appendPageLinks' function and pass the searched students array into the function.
         appendPageLinks(newStudentSearchArray);
       } else
       {
-        showMessage();
+        //Call the 'showNoStudentsFoundMessage' function to show the message.
+        showNoStudentsFoundMessage();
+
+        //Call the 'appendPageLinks' function and pass the searched students
+        //array into the function.  This will show no pagination links on the
+        //screen, but will still be functional dynamically in the html file
+        //when the search button is clicked and reloads the initial start page.
         appendPageLinks(newStudentSearchArray);
       }
-      newStudentSearchArray = [];
+      newStudentSearchArray = [];  //Clear the searched students array after each search.
   });
 }
 
@@ -204,7 +217,8 @@ function noStudentsFoundMessage()
   const messageDiv = document.createElement('div');
   messageDiv.className = "no-students-found";
   const pageClass = document.getElementsByClassName('page')[0];
-  messageDiv.innerHTML = "<h2>No students found</h2>";
+  messageDiv.textContent = "No students found";
+  messageDiv.style.fontWeight = "bold";
   messageDiv.style.display = "none";
   pageClass.appendChild(messageDiv);
 }
@@ -213,14 +227,14 @@ function noStudentsFoundMessage()
 noStudentsFoundMessage();
 
 //Create a function that shows the no students found message on the screen
-function showMessage()
+function showNoStudentsFoundMessage()
 {
   const showStudentMessage = document.getElementsByClassName('no-students-found')[0];
   showStudentMessage.style.display = "block";
 }
 
 //Create a function that hides the no students found message on the screen
-function hideMessage()
+function hideNoStudentsFoundMessage()
 {
   const hideStudentMessage = document.getElementsByClassName('no-students-found')[0];
   hideStudentMessage.style.display = "none";
@@ -228,10 +242,10 @@ function hideMessage()
 
 
 //Call the 'showPage' function and show the first page of students
-showPage(1, studentListArray);
+showPage(1, studentListArray); //Pass the initial student list variable in the function
 
 //Call the 'appendPageLinks' function
-appendPageLinks(studentListArray);
+appendPageLinks(studentListArray); //Pass the initial student list variable in the function
 
 //Call the 'appendSearch' function
-appendSearch(studentListArray);
+appendSearch(studentListArray); //Pass the initial student list variable in the function
